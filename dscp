@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+img=$1
+remote=$2
+
+docker pull registry:2
+docker run -d -p 5000:5000 --name dscp-registry registry:2
+sleep 10s
+
+docker tag $img 127.0.0.1:5000/bscp
+docker push 127.0.0.1:5000/bscp
+
+ssh -R 5000:127.0.0.1:5000 $remote "docker pull 127.0.0.1:5000/bscp; docker tag 127.0.0.1:5000/bscp $img; docker rmi 127.0.0.1:5000/bscp"
+
+docker rm -f dscp-registry
+docker rmi 127.0.0.1:5000/bscp
+
