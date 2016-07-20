@@ -17,15 +17,14 @@ if [ -z "${COMPOSE_FILE:-}" ]; then
 fi
 project=""
 if [ -z "${COMPOSE_PROJECT_NAME:-}" ]; then
-	label=$(cat docker-compose.yml | grep "com.docker.compose.project" | head -1 | sed 's/^.*- com.docker.compose.project=\(.*\)$/\1/')
-	if [ $(echo $label | wc -l) -ne 1 ]; then
+	label=$(cat docker-compose.yml |& grep "com.docker.compose.project" | head -1 | sed 's/^.*- com.docker.compose.project=\(.*\)$/\1/')
+	if [ $(echo $label | wc -l) -gt 1 ]; then
 		project="-p ${label}"
 	fi
 fi
 
 cmd=""
 if [ $(basename $0) == "dc" ]; then
-	shift
 	cmd=$1
 	shift
 else
