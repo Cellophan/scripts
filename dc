@@ -18,7 +18,7 @@ fi
 project=""
 if [ -z "${COMPOSE_PROJECT_NAME:-}" ]; then
 	label=$(cat docker-compose.yml |& grep "com.docker.compose.project" | head -1 | sed 's/^.*- com.docker.compose.project=\(.*\)$/\1/')
-	if [ $(echo $label | wc -l) -gt 1 ]; then
+	if [ -n "${label}" ]; then
 		project="-p ${label}"
 	fi
 fi
